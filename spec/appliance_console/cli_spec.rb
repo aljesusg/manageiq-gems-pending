@@ -226,6 +226,46 @@ describe ApplianceConsole::Cli do
     end
   end
 
+  context "#set_server_state" do
+    it "state is status" do
+      expect(subject).to receive(:say)
+      expect_any_instance_of(LinuxAdmin::Service.new("test").class).to receive(:status).and_return(true)
+      subject.parse(%w(--server status)).run
+    end
+
+    it "state is start" do
+      expect(subject).to receive(:say)
+      expect(LinuxAdmin::Service).to receive(:new)
+      expect_any_instance_of(LinuxAdmin::Service.new("evmserverd").class).to receive(:start).and_return(true)
+
+      subject.parse(%w(--server start)).run
+    end
+
+    it "state is stop" do
+      expect(subject).to receive(:say)
+      expect(LinuxAdmin::Service).to receive(:new)
+      expect_any_instance_of(LinuxAdmin::Service.new("evmserverd").class).to receive(:stop).and_return(true)
+
+      subject.parse(%w(--server stop)).run
+    end
+
+    it "state is restart" do
+      expect(subject).to receive(:say)
+      expect(LinuxAdmin::Service).to receive(:new)
+      expect_any_instance_of(LinuxAdmin::Service.new("evmserverd").class).to receive(:restart).and_return(true)
+
+      subject.parse(%w(--server restart)).run
+    end
+
+    it "state is wrong" do
+      expect(subject).to receive(:say)
+      expect(LinuxAdmin::Service).to receive(:new)
+
+
+      subject.parse(%w(--server aa)).run
+    end
+  end
+
   context "#config_tmp_disk" do
     it "configures disk" do
       expect(subject).to receive(:disk_from_string).with('x').and_return('/dev/x')
