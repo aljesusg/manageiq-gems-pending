@@ -122,6 +122,36 @@ describe ApplianceConsole::Cli do
     subject.run
   end
 
+  context "#set date and time" do
+    it "should set date and time with auto sync" do
+      expect(subject).to receive(:say)
+      expect(ApplianceConsole::DateTimeConfiguration).to receive(:new)
+      subject.parse(%w(--date 2017-02-07 --time 12:00:00 --timesync true")).run
+    end
+
+    it "should set date and time without auto sync" do
+      expect(subject).to receive(:say)
+      expect(ApplianceConsole::DateTimeConfiguration).to receive(:new)
+      subject.parse(%w(--date 2017-02-07 --time 12:00:00)).run
+    end
+
+    it "should fail setting date" do
+      expect(subject).to receive(:say)
+      expect(ApplianceConsole::DateTimeConfiguration).not_to receive(:new)
+      expect do
+        subject.parse(%w(--date 20317-02-00)).run
+      end.to raise_error("Failed to configure date. Wrong format.")
+    end
+
+    it "should fail setting time" do
+      expect(subject).to receive(:say)
+      expect(ApplianceConsole::DateTimeConfiguration).not_to receive(:new)
+      expect do
+        subject.parse(%w(--time _12:00:00)).run
+      end.to raise_error("Failed to configure time. Wrong format.")
+    end
+  end
+
   context "#ipa" do
     it "should handle uninstalling ipa" do
       expect(subject).to receive(:say)
