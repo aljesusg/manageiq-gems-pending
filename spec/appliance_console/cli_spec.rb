@@ -236,7 +236,7 @@ describe ApplianceConsole::Cli do
     it "state is start" do
       expect(subject).to receive(:say)
       expect(LinuxAdmin::Service).to receive(:new)
-      expect_any_instance_of(LinuxAdmin::Service.new("evmserverd").class).to receive(:start).and_return(true)
+      expect_any_instance_of(LinuxAdmin::Service.new("test").class).to receive(:start).and_return(true)
 
       subject.parse(%w(--server start)).run
     end
@@ -244,7 +244,7 @@ describe ApplianceConsole::Cli do
     it "state is stop" do
       expect(subject).to receive(:say)
       expect(LinuxAdmin::Service).to receive(:new)
-      expect_any_instance_of(LinuxAdmin::Service.new("evmserverd").class).to receive(:stop).and_return(true)
+      expect_any_instance_of(LinuxAdmin::Service.new("test").class).to receive(:stop).and_return(true)
 
       subject.parse(%w(--server stop)).run
     end
@@ -252,7 +252,7 @@ describe ApplianceConsole::Cli do
     it "state is restart" do
       expect(subject).to receive(:say)
       expect(LinuxAdmin::Service).to receive(:new)
-      expect_any_instance_of(LinuxAdmin::Service.new("evmserverd").class).to receive(:restart).and_return(true)
+      expect_any_instance_of(LinuxAdmin::Service.new("test").class).to receive(:restart).and_return(true)
 
       subject.parse(%w(--server restart)).run
     end
